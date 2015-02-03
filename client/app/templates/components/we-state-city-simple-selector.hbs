@@ -1,0 +1,20 @@
+<span class="state-selector">
+  {{view "select" content=statesOptions
+    prompt="Selecionar estado"
+    value=selectedState
+    selection=selectedStateObject
+    optionValuePath="content.code"
+    optionLabelPath="content.name"
+    }}
+</span>
+
+<span class="city-selector">
+  {{view "select" content=citiesOptions
+    prompt="Selecionar cidade"
+    value=selectedCity
+    selection=selectedCityObject
+    optionValuePath="content.name"
+    optionLabelPath="content.name"
+    disabled=citySelectIsDisabled
+    }}
+</span>

@@ -1,0 +1,42 @@
+<form>
+  <div class="form-group">
+    {{view "select" content=statesOptions
+      classNames="form-control"
+      prompt="Selecionar estado"
+      value=selectedState
+      selection=selectedStateObject
+      optionValuePath="content.code"
+      optionLabelPath="content.name"
+      }}
+  </div>
+
+  <div class="form-group">
+    {{view "select" content=citiesOptions
+      classNames="form-control"
+      prompt="Selecionar cidade"
+      value=selectedCity
+      selection=selectedCityObject
+      optionValuePath="content.name"
+      optionLabelPath="content.name"
+      disabled=citySelectIsDisabled
+      }}
+  </div>
+
+  {{#if hasChanges}}
+    <div class="form-group">
+      <button {{action 'save'}} class="btn btn-primary">{{t 'Save'}}</button>
+      <button {{action 'reset'}} class="btn btn-default" type="reset">{{t 'Cancel'}}</button>
+    </div>
+  {{/if}}
+
+</form>
+
+{{#if mapSrc}}
+  <iframe
+    width="100%"
+    height="350"
+    frameborder="0" style="border:0"
+    {{bind-attr src=mapSrc}}>
+  </iframe>
+{{/if}}
+

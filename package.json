@@ -34,6 +34,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:wejs/we-plugin-relatos.git"
+    "url": "git@github.com:wejs/we-plugin-location.git"
   }
 }

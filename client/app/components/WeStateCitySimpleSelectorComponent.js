@@ -2,6 +2,8 @@
 App.WeStateCitySimpleSelectorComponent = Ember.Component.extend({
   country: 'BR',
 
+  classNames: ['state-city-component'],
+
   selectedState: '',
   selectedCity: '',
 

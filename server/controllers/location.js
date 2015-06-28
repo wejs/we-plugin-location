@@ -19,9 +19,11 @@ module.exports = {
     }).then(function (state) {
       if(!state) return res.notFound();
 
-      return we.db.models.lcity.findAndCountAll({
-        where: { stateId: state.id }, order: 'name DESC'
-      }).then(function (result) {
+      res.locals.query.where.stateId = state.id;
+      res.locals.query.order = 'name DESC';
+
+      return we.db.models.lcity.findAndCountAll(res.locals.query)
+      .then(function (result) {
 
         res.locals.metadata.state = state;
         res.locals.metadata.count = result.count;
@@ -38,14 +40,17 @@ module.exports = {
 
     var countryCode = req.params.countryCode;
     if (!countryCode) return next();
+
     return we.db.models.lcountry.findOne({
       where: {code: countryCode}
     }).then(function (country) {
       if(!country) return res.notFound();
 
-      return we.db.models.lstate.findAndCountAll({
-        where: { countryId: country.id }, order: 'code DESC'
-      }).then(function (result) {
+      res.locals.query.where.countryId = country.id;
+      res.locals.query.order = 'code DESC';
+
+      return we.db.models.lstate.findAndCountAll(res.locals.query)
+      .then(function (result) {
 
         res.locals.metadata.country = country;
         res.locals.metadata.count = result.count;

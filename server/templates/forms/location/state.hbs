@@ -1,0 +1,51 @@
+<div class="form-group {{#if error}}has-error has-feedback{{/if}}">
+  <label for="{{fieldId}}">{{t fieldName}} {{#ifCond field.allowNull false}}*{{/ifCond}}</label>
+  {{{field-help-error error}}}
+
+  <select id="{{fieldId}}" name="{{name}}"
+    class="form-control" {{fieldAttrs}}
+    {{#if field.formFieldMultiple}}multiple="multiple"{{/if}}>
+      <option value="{{value}}">{{value}}</option>
+  </select>
+
+  <p class="help-block">{{t help}}</p>
+  {{{field-help-error error}}}
+</div>
+
+<script>$(document).ready(function() {
+  function checkStateDisabled (state) {
+    if (!country) {
+      stateSelector.attr('disabled', 'disabled');
+    } else {
+      stateSelector.attr('disabled', null);
+    }
+  }
+
+  var country = $('#{{formId}} [name="{{field.formCountryFieldName}}"]')[0].value;
+  var stateSelector = $('#{{fieldId}}');
+
+  checkStateDisabled(country);
+
+  {{#if field.formStateFieldName}}
+    $('#{{formId}} [name="{{field.formCountryFieldName}}"]').change(function() {
+      country = this.value;
+      checkStateDisabled(country);
+    })
+  {{/if}}
+
+  we.components.select.init('#{{fieldId}}', {
+    searchField: 'name',
+    cache: true,
+    url: function () {
+      return '/api/v1/location/' + country;
+    },
+    processResults: function (data, params) {
+      if (!data || !data.lstate) return {};
+      return {
+        results: data.lstate.map(function(r, i) {
+          return { text: r.name, id: r.code };
+        })
+      };
+    }
+  });
+});</script>

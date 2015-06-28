@@ -1,9 +1,8 @@
 /**
  * Script to load all locations in app DB
  *
- * Require it in a App script with sails loaded
+ * Require it in a App script
  */
-
 
 // TODO add suport to load others locations from .json
 var locations = require('../lib/locations/BR.json');
@@ -11,53 +10,51 @@ var async = require('async');
 
 var CLI = {};
 
-CLI.saveLocations = function saveLocations(done) {
-  var states = [];
-  var cities = [];
+CLI.saveLocations = function saveLocations(we, done) {
+  var cityCount = 0;
+  var stateCount = 0;
+  console.time('State and city creation time:');
 
-  return Country.create({
+  return we.db.models.lcountry.create({
     name: 'Brasil',
     code: 'BR',
-  }).exec(function(err, country) {
-    if (err) {
-      return done(err);
-    }
-
+  }).then(function (country) {
     return async.each(locations.states, function(state, nextState) {
-      return State.create({
+      return we.db.models.lstate.create({
         code: state.code,
         name: state.name,
-        country: country.id
-      }).exec(function(err, salvedState) {
-        if(err) return nextState(err);
-        return async.each(state.cities, function(city, nextCity) {
-          return City.create({
+        countryId: country.id
+      }).then(function (salvedState) {
+        return async.each(state.cities, function (city, nextCity) {
+          return we.db.models.lcity.create({
             name: city,
-            state: salvedState.id
-          }).exec(function(err, cities){
-            if (err) {
-              return nextCity(err)
-            }
-            return nextCity();
-          });
-        }, function afterCreatedAllCities(err){
-          if(err) {
-            sails.log.error('Error on create cities',err);
+            stateId: salvedState.id
+          }).then(function () {
+            cityCount++;
+             return nextCity();
+          }).catch(nextCity);
+        }, function afterCreatedAllCities (err) {
+          if (err) {
+            we.log.error('Error on create cities',err);
             return done(err);
           }
+
+          stateCount++;
           return nextState();
         });
 
-      })
-
+      }).catch(nextState);
     },function afterCreateStates(err) {
       if (err) {
-        sails.log.error('Error on create states', err);
+        we.log.error('Error on create states', err);
       }
 
+      we.log.info('DONE created '+ stateCount + ' states and ' + cityCount + ' cities');
+      console.timeEnd('State and city creation time:');
+
       return done();
-    });
-  })
+    })
+  }).catch(done);
 }
 
 module.exports = CLI;

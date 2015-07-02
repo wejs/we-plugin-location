@@ -31,25 +31,33 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   });
 
   plugin.events.on('we:after:load:forms', function (we) {
-    we.form.forms.register.fields.beforeLocation = {
-      type: 'break'
-    }
+    if (we.form.forms.register.fields.beforeLocation !== null)
+      we.form.forms.register.fields.beforeLocation = {
+        type: 'break'
+      }
     // extend core register form
-    we.form.forms.register.fields.country = {
-      type: 'location/country',
-      defaultValue: 'BR'
-    }
-    we.form.forms.register.fields.locationState = {
-      type: 'location/state',
-      formCountryFieldName: 'country'
-    }
-    we.form.forms.register.fields.city = {
-      type: 'location/city',
-      formStateFieldName: 'locationState'
-    }
-    we.form.forms.register.fields.afterLocation = {
-      type: 'break'
-    }
+    if (we.form.forms.register.fields.country !== null)
+      we.form.forms.register.fields.country = {
+        type: 'location/country',
+        defaultValue: 'BR'
+      }
+
+    if (we.form.forms.register.fields.locationState !== null)
+      we.form.forms.register.fields.locationState = {
+        type: 'location/state',
+        formCountryFieldName: 'country'
+      }
+
+    if (we.form.forms.register.fields.city !== null)
+      we.form.forms.register.fields.city = {
+        type: 'location/city',
+        formStateFieldName: 'locationState'
+      }
+
+    if (we.form.forms.register.fields.afterLocation !== null)
+      we.form.forms.register.fields.afterLocation = {
+        type: 'break'
+      }
    });
 
   return plugin;

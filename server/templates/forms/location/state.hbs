@@ -33,6 +33,18 @@
     })
   {{/if}}
 
+  // only suport pt-br cities and states
+  // TODO add suport to others regions
+  $('#{{formId}} [name="{{field.formCountryFieldName}}"]')
+  .change(function(){
+    if ($(this).val() !== 'BR') {
+      stateSelector.val(null);
+      stateSelector.parent().hide();
+    } else {
+      stateSelector.parent().show();
+    }
+  });
+
   we.components.select.init('#{{fieldId}}', {
     searchField: 'name',
     cache: true,

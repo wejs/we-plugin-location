@@ -6,6 +6,23 @@
  */
 
 module.exports = {
+
+  findCountries: function(req, res, next) {
+    var we = req.getWe();
+
+    return we.db.models.lcountry.findAll(res.locals.query)
+    .then(function (country) {
+      if(!country) return res.notFound();
+
+      // set http cache headers
+      if (!res.getHeader('Cache-Control'))
+        res.setHeader('Cache-Control', 'public, max-age='+we.config.cache.maxage);
+
+      res.locals.record = country;
+      res.ok();
+    }).catch(res.queryError);
+  },
+
    // /location/:countryCode/:stateCode
   findCitiesByStateCode: function(req, res, next) {
     var we = req.getWe();

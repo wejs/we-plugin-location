@@ -21,7 +21,13 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       action        : 'findCitiesByStateCode',
       model         : 'lcity',
       responseType  : 'json'
-    }
+    },
+    'get /api/v1/location': {
+      controller    : 'location',
+      action        : 'findCountries',
+      model         : 'lcountry',
+      responseType  : 'json'
+    },
   });
 
   plugin.setTemplates({
@@ -29,6 +35,34 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     'forms/location/state': __dirname + '/server/templates/forms/location/state.hbs',
     'forms/location/city': __dirname + '/server/templates/forms/location/city.hbs'
   });
+
+  // campos de cfp e passaporte
+  plugin.hooks.on('we:models:before:instance', function (we, done) {
+
+    we.db.modelsConfigs.user.definition.country = {
+      type: we.db.Sequelize.STRING(5),
+      formFieldType: 'location/country',
+      defaultValue: 'BR'
+    }
+
+    we.db.modelsConfigs.user.definition.locationState = {
+      type: we.db.Sequelize.STRING(10),
+      formFieldType: 'location/state',
+      formCountryFieldName: 'country'
+    }
+    we.db.modelsConfigs.user.definition.city = {
+      type: we.db.Sequelize.STRING,
+      formFieldType: 'location/city',
+      formStateFieldName: 'locationState'
+    }
+    we.db.modelsConfigs.user.definition.afterLocation = {
+      type: we.db.Sequelize.VIRTUAL,
+      formFieldType: 'break'
+    }
+
+    done();
+  });
+
 
   plugin.events.on('we:after:load:forms', function (we) {
     if (we.form.forms.register.fields.beforeLocation !== null)

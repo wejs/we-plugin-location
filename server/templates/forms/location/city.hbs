@@ -29,7 +29,6 @@
   {{#if field.formStateFieldName}}
     $('#{{formId}} select[name="{{field.formStateFieldName}}"]').change(function() {
       state = this.value;
-
       checkCityDisabled(state);
     })
   {{/if}}
@@ -56,7 +55,6 @@
       if (!data || !data.lcity) return {};
       return {
         results: data.lcity.map(function(r, i) {
-          console.log(i, r)
           return { text: r.name, id: r.name };
         })
       };

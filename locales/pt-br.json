@@ -1,0 +1,11 @@
+{
+  "form-register-country": "País",
+  "form-placeholder-register-country": "",
+  "form-helper-register-country": "Selecione o país que você mora no campo acima.",
+  "form-register-locationState": "Estado",
+  "form-placeholder-register-locationState": "",
+  "form-helper-register-locationState": "Selecione o estado onde você mora, por exemplo: Pernambuco",
+  "form-register-city": "Cidade",
+  "form-placeholder-register-city": "",
+  "form-helper-register-city": "Selecione a cidade onde você mora, por exemplo: Recife"
+}

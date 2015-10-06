@@ -18,7 +18,7 @@ module.exports = {
       if (!res.getHeader('Cache-Control'))
         res.setHeader('Cache-Control', 'public, max-age='+we.config.cache.maxage);
 
-      res.locals.record = country;
+      res.locals.data = country;
       res.ok();
     }).catch(res.queryError);
   },
@@ -44,7 +44,7 @@ module.exports = {
 
         res.locals.metadata.state = state;
         res.locals.metadata.count = result.count;
-        res.locals.record = result.rows;
+        res.locals.data = result.rows;
 
         return res.ok();
       }).catch(res.queryError);
@@ -71,7 +71,7 @@ module.exports = {
 
         res.locals.metadata.country = country;
         res.locals.metadata.count = result.count;
-        res.locals.record = result.rows;
+        res.locals.data = result.rows;
 
         return res.ok();
 

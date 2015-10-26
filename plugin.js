@@ -30,12 +30,6 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     },
   });
 
-  plugin.setTemplates({
-    'forms/location/country': __dirname + '/server/templates/forms/location/country.hbs',
-    'forms/location/state': __dirname + '/server/templates/forms/location/state.hbs',
-    'forms/location/city': __dirname + '/server/templates/forms/location/city.hbs'
-  });
-
   // campos de cfp e passaporte
   plugin.hooks.on('we:models:before:instance', function (we, done) {
 

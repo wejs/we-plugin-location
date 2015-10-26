@@ -7,13 +7,14 @@
 // TODO add suport to load others locations from .json
 var locations = require('../lib/locations/BR.json');
 var countries = require('../lib/locations/countries.json');
-var async = require('async');
 
 var CLI = {};
 
 CLI.saveLocations = function saveLocations(we, done) {
   var cityCount = 0;
   var stateCount = 0;
+  var async = we.utils.async;
+
   console.time('State and city creation time:');
 
   return we.db.models.lcountry.bulkCreate(countries).then(function (country) {

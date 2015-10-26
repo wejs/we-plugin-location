@@ -4,10 +4,7 @@
   "version": "0.3.3",
   "license": "MIT",
   "main": "lib/index.js",
-  "dependencies": {
-    "async": "^1.2.1",
-    "lodash": "^3.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "engines": {
     "node": ">=0.10.0"

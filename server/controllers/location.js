@@ -7,7 +7,7 @@
 
 module.exports = {
 
-  findCountries: function(req, res, next) {
+  findCountries: function(req, res) {
     var we = req.getWe();
 
     return we.db.models.lcountry.findAll(res.locals.query)

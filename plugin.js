@@ -14,19 +14,46 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       controller    : 'location',
       action        : 'findStatesByCountryCode',
       model         : 'lstate',
-      responseType  : 'json'
+      responseType  : 'json',
+      search: {
+        name: {
+          parser: 'contains',
+          target: {
+            type: 'field',
+            field: 'name'
+          }
+        }
+      }
     },
     'get /api/v1/location/:countryCode/:stateCode': {
       controller    : 'location',
       action        : 'findCitiesByStateCode',
       model         : 'lcity',
-      responseType  : 'json'
+      responseType  : 'json',
+      search: {
+        name: {
+          parser: 'contains',
+          target: {
+            type: 'field',
+            field: 'name'
+          }
+        }
+      }
     },
     'get /api/v1/location': {
       controller    : 'location',
       action        : 'findCountries',
       model         : 'lcountry',
-      responseType  : 'json'
+      responseType  : 'json',
+      search: {
+        name: {
+          parser: 'contains',
+          target: {
+            type: 'field',
+            field: 'name'
+          }
+        }
+      }
     },
   });
 

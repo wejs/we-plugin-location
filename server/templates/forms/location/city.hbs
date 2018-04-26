@@ -1,9 +1,9 @@
-<div class="form-group {{#if error}}has-error has-feedback{{/if}}">
+<div class="form-group location-city-f-group {{#if error}}has-error has-feedback{{/if}}">
   <label for="{{fieldId}}">{{t fieldName}} {{#ifCond field.allowNull false}}*{{/ifCond}}</label>
   {{{field-help-error error}}}
 
   <select id="{{fieldId}}" name="{{name}}"
-    class="form-control" {{fieldAttrs}}
+    class="form-control" {{{fieldAttrs}}}
     {{#if field.formFieldMultiple}}multiple="multiple"{{/if}}>
       <option value="{{value}}">{{value}}</option>
   </select>

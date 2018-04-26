@@ -6,12 +6,11 @@
  */
 
 module.exports = {
-
-  findCountries: function(req, res) {
-    var we = req.getWe();
+  findCountries(req, res) {
+    const we = req.getWe();
 
     return we.db.models.lcountry.findAll(res.locals.query)
-    .then(function (country) {
+    .then((country)=> {
       if(!country) return res.notFound();
 
       // set http cache headers
@@ -19,63 +18,67 @@ module.exports = {
         res.setHeader('Cache-Control', 'public, max-age='+we.config.cache.maxage);
 
       res.locals.data = country;
-      res.ok();
-    }).catch(res.queryError);
+      return res.ok();
+    })
+    .catch(res.queryError);
   },
 
-   // /location/:countryCode/:stateCode
-  findCitiesByStateCode: function(req, res, next) {
-    var we = req.getWe();
+  // /location/:countryCode/:stateCode
+  findCitiesByStateCode(req, res, next) {
+    const we = req.getWe();
 
     //var countryCode = req.params.countryCode;
-    var stateCode = req.params.stateCode;
+    let stateCode = req.params.stateCode;
     if (!stateCode) return next();
 
     return we.db.models.lstate.findOne( {
       where: { code: stateCode }
-    }).then(function (state) {
+    })
+    .then((state)=> {
       if(!state) return res.notFound();
 
       res.locals.query.where.stateId = state.id;
-      res.locals.query.order = 'name DESC';
+      res.locals.query.order = [['name', 'DESC']];
 
       return we.db.models.lcity.findAndCountAll(res.locals.query)
-      .then(function (result) {
+      .then((result)=> {
 
         res.locals.metadata.state = state;
         res.locals.metadata.count = result.count;
         res.locals.data = result.rows;
 
         return res.ok();
-      }).catch(res.queryError);
-    }).catch(res.queryError);
+      });
+    })
+    .catch(res.queryError);
   },
 
   // /location/:countryCode
-  findStatesByCountryCode: function(req, res, next) {
-    var we = req.getWe();
+  findStatesByCountryCode(req, res, next) {
+    const we = req.getWe();
 
-    var countryCode = req.params.countryCode;
+    let countryCode = req.params.countryCode;
     if (!countryCode) return next();
 
     return we.db.models.lcountry.findOne({
       where: {code: countryCode}
-    }).then(function (country) {
+    })
+    .then((country)=> {
       if(!country) return res.notFound();
 
       res.locals.query.where.countryId = country.id;
-      res.locals.query.order = 'code DESC';
+      res.locals.query.order = [['code','DESC']];
 
       return we.db.models.lstate.findAndCountAll(res.locals.query)
-      .then(function (result) {
+      .then((result)=> {
 
         res.locals.metadata.country = country;
         res.locals.metadata.count = result.count;
         res.locals.data = result.rows;
 
         return res.ok();
-
-      }).catch(res.queryError);
-    }).catch(res.queryError);
+      });
+    })
+    .catch(res.queryError);
   }
 };

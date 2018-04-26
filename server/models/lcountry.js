@@ -8,24 +8,19 @@
 
 module.exports = function Model(we) {
   // set sequelize model define and options
-  var model = {
+  const model = {
     definition: {
       name: { type: we.db.Sequelize.STRING },
       code: { type: we.db.Sequelize.STRING(5) }
     },
 
-    // associations: {
-    //   states: {
-    //     type: 'hasMany',
-    //     model: 'lstate'
-    //   }
-    // },
+    associations: {},
 
     options: {
       classMethods: {},
       instanceMethods: {
-        toJSON: function() {
-          var obj = this.get();
+        toJSON() {
+          let obj = this.get();
           delete obj.createdAt;
           delete obj.updatedAt;
           delete obj.deletedAt;

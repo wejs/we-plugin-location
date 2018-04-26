@@ -1,14 +1,9 @@
 /**
- * Plugin.js file, set configs, routes, hooks and events here
- *
- * see http://wejs.org/docs/we/extend.plugin
+ * Main we-plugin-location file
  */
 module.exports = function loadPlugin(projectPath, Plugin) {
-  var plugin = new Plugin(__dirname);
-  // set plugin configs
-  // plugin.setConfigs();
+  const plugin = new Plugin(__dirname);
 
-  // set plugin routes
   plugin.setRoutes({
     'get /api/v1/location/:countryCode': {
       controller    : 'location',
